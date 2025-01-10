@@ -16,8 +16,9 @@ def emotion_detector_route():
         # Call the emotion_detector function
         result = emotion_detector(text)
         
-        if result is None:
-            return jsonify({"error": "Invalid text or processing failed"}), 400
+        # Check if the result indicates an error (dominant_emotion is None)
+        if result['dominant_emotion'] is None:
+            return jsonify({"response": "Invalid text! Please try again!"}), 400
 
         # Format the response string
         response_text = (
@@ -33,7 +34,7 @@ def emotion_detector_route():
         return jsonify({"response": response_text})
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        return jsonify({"response": "Invalid text! Please try again!"}), 400
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5000)
